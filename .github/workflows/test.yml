@@ -24,3 +24,18 @@ jobs:
         ./configure && make && make check
         timeout 300 src/iperf3 -s &
         ./test_commands.sh localhost
+  build-test-macos-ish:
+    strategy:
+      matrix:
+        os: [macos-15, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: install dependencies
+      run: |
+        brew install coreutils
+    - name: build
+      run: |
+        ./configure && make && make check
+        gtimeout 300 src/iperf3 -s &
+        ./test_commands.sh localhost
